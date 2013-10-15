@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130921135052) do
+ActiveRecord::Schema.define(version: 20131013154621) do
+
+  create_table "haves", force: true do |t|
+    t.string   "course_number"
+    t.string   "course_name"
+    t.integer  "course_section"
+    t.integer  "trade_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "roles", force: true do |t|
     t.string   "name"
@@ -23,6 +32,22 @@ ActiveRecord::Schema.define(version: 20130921135052) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], name: "index_roles_on_name"
+
+  create_table "trade_messages", force: true do |t|
+    t.text     "content"
+    t.integer  "user_id"
+    t.integer  "trade_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "trades", force: true do |t|
+    t.text     "note"
+    t.boolean  "finished"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -49,5 +74,14 @@ ActiveRecord::Schema.define(version: 20130921135052) do
   end
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+
+  create_table "wants", force: true do |t|
+    t.string   "course_number"
+    t.string   "course_name"
+    t.integer  "course_section"
+    t.integer  "trade_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

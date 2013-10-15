@@ -1,0 +1,33 @@
+<h1>Listing wants</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Course number</th>
+      <th>Course name</th>
+      <th>Course section</th>
+      <th>Trade</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @wants.each do |want| %>
+      <tr>
+        <td><%= want.course_number %></td>
+        <td><%= want.course_name %></td>
+        <td><%= want.course_section %></td>
+        <td><%= want.trade_id %></td>
+        <td><%= link_to 'Show', want %></td>
+        <td><%= link_to 'Edit', edit_want_path(want) %></td>
+        <td><%= link_to 'Destroy', want, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Want', new_want_path %>
