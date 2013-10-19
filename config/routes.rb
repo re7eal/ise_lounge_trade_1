@@ -1,7 +1,12 @@
 BootstrapDeviseCancan::Application.routes.draw do
-  resources :wants
 
-  resources :haves
+  resources :want_courses
+
+  resources :have_courses
+
+  get 'trade_data', to: 'trades#data'
+
+  get 'my_trades', to: 'trades#my_trades'
 
   resources :trade_messages
 

@@ -31,3 +31,9 @@ group :test do
   gem 'email_spec'
   gem 'launchy'
 end
+
+gem 'jquery-ui-rails'
+
+gem 'twitter-bootstrap-rails'
+
+gem 'designmodo-flatuipro-rails'

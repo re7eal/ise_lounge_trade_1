@@ -1,6 +1,6 @@
 class TradesController < ApplicationController
   before_filter :authenticate_user!
-  before_action :set_trade, only: [:show, :edit, :update, :destroy]
+  before_action :set_trade, only: [:show, :edit, :update, :destroy, :data]
 
   # GET /trades
   # GET /trades.json
@@ -60,6 +60,22 @@ class TradesController < ApplicationController
       format.html { redirect_to trades_url }
       format.json { head :no_content }
     end
+  end
+
+  def data
+    @user_name = @trade.user.name
+    @trade_messages = @trade.trade_messages
+    @have_courses = @trade.have_courses
+    @want_courses = @trade.want_courses
+
+    respond_to do |format|
+      format.html { render :json => {:user_name => @user_name, :trade_messages => @trade_messages, :have_courses => @have_courses, :want_courses => @want_courses }}
+      format.json { render :json => {:user_name => @user_name, :trade_messages => @trade_messages, :have_courses => @have_courses, :want_courses => @want_courses }}
+    end
+  end
+
+  def my_trades
+    @trades = Trade.where(:user_id => current_user.id)
   end
 
   private
