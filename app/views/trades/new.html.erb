@@ -119,11 +119,11 @@
 		<div class="offset6">
 			<div class="well">
 				<p>Trade note</p>
-				<textarea rows="3" class="span12" placeholder="Description..."></textarea>
+				<textarea rows="3" class="span12" placeholder="Description..." ng-model="tradeNote"></textarea>
 			</div>
 			<!--</div>-->
 			<!--<div class="span6">-->
-			<a href="#fakelink" class="btn btn-large btn-primary pull-right">Post
+			<a class="btn btn-large btn-primary pull-right" ng-click="postTrade()">Post
 				trades!</a>
 		</div>
 	</div>

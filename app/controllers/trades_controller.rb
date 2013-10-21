@@ -26,9 +26,12 @@ class TradesController < ApplicationController
   # POST /trades.json
   def create
     @trade = Trade.new(trade_params)
+    @trade.finished = false
+    @trade.user_id = current_user.id
 
     respond_to do |format|
       if @trade.save
+        $trade_id = @trade.id
         format.html { redirect_to @trade, notice: 'Trade was successfully created.' }
         format.json { render action: 'show', status: :created, location: @trade }
       else

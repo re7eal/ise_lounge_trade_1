@@ -1,4 +1,4 @@
-App.controller 'NewTradeController', ['$scope', '$http', '$location', ($scope, $http, $location) ->
+App.controller 'NewTradeController', ['$scope', '$location', 'HaveCourse', 'WantCourse', 'Trade', ($scope, $location, HaveCourse, WantCourse, Trade) ->
  
   $scope.haveCourses = []
   $scope.haveCourseNo = ""
@@ -9,6 +9,8 @@ App.controller 'NewTradeController', ['$scope', '$http', '$location', ($scope, $
   $scope.wantCourseNo = ""
   $scope.wantCourseName = ""
   $scope.wantCourseSection = ""
+
+  $scope.tradeNote = ""
 
   $scope.haveAddCourse = ->
     $scope.haveCourses.push
@@ -37,6 +39,29 @@ App.controller 'NewTradeController', ['$scope', '$http', '$location', ($scope, $
     $scope.wantCourses.splice index, 1
 
   $scope.postTrade = ->
-    
+    Trade.save
+      note : $scope.tradeNote
+    , ((response) ->
+      for haveCourse of $scope.haveCourses
+        HaveCourse.save
+          course_number : $scope.haveCourses[haveCourse].course_number
+          course_name : $scope.haveCourses[haveCourse].course_name
+          course_section : $scope.haveCourses[haveCourse].course_section
+        , ((response) ->
+          console.log "Success"
+        ), (response) ->
+          console.log "Error" + response.status
+
+      for wantCourse of $scope.wantCourses
+        WantCourse.save
+          course_number : $scope.wantCourses[wantCourse].course_number
+          course_name : $scope.wantCourses[wantCourse].course_name
+          course_section : $scope.wantCourses[wantCourse].course_section
+        , ((response) ->
+          console.log "Success"
+        ), (response) ->
+          console.log "Error" + response.status
+      ), (response) ->
+        console.log "Error" + response.status
 
 ]
