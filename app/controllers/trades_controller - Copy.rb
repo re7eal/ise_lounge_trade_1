@@ -25,39 +25,15 @@ class TradesController < ApplicationController
   # POST /trades
   # POST /trades.json
   def create
-    @trade = Trade.new(:note => params[:note])
+    @trade = Trade.new(trade_params)
     @trade.finished = false
     @trade.user_id = current_user.id
 
     respond_to do |format|
       if @trade.save
-        unless params[:have_courses].nil?
-          params[:have_courses].each do |course|
-            @have_course = HaveCourse.new(course)
-            @have_course.trade_id = @trade.id
-            if @have_course.save
-              puts ''
-            else
-              format.html { render action: 'new' }
-              format.json { render json: @have_course.errors, status: :unprocessable_entity }
-            end
-          end
-        end
-        unless params[:want_courses].nil?
-          params[:want_courses].each do |course|
-            @want_course = WantCourse.new(course)
-            @want_course.trade_id = @trade.id
-            if @want_course.save
-              puts ''
-            else
-              format.html { render action: 'new' }
-              format.json { render json: @want_course.errors, status: :unprocessable_entity }
-            end
-          end
-        end
-
+        $trade_id = @trade.id
         format.html { redirect_to @trade, notice: 'Trade was successfully created.' }
-        format.json { render json: @trade }
+        format.json { render action: 'show', status: :created, location: @trade }
       else
         format.html { render action: 'new' }
         format.json { render json: @trade.errors, status: :unprocessable_entity }
@@ -113,6 +89,6 @@ class TradesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trade_params
-      params.require(:trade).permit(:note, :finished)
+      params.require(:trade).permit(:note, :finished, :user_id)
     end
 end

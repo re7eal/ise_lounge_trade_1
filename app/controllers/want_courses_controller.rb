@@ -10,13 +10,7 @@ class WantCoursesController < ApplicationController
   end
  
   def create
-    @want_course = WantCourse.new(want_course_params)
-    @want_course.trade_id = $trade_id
-    if @want_course.save
-      respond_with @want_course
-    else
-      respond_with json: @want_course.errors, status: :unprocessable_entity
-    end
+    respond_with WantCourse.create(params[:want_course])
   end
  
   def update
@@ -26,11 +20,5 @@ class WantCoursesController < ApplicationController
   def destroy
     respond_with WantCourse.destroy(params[:id])
   end
-
-  private
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def want_course_params
-      params.require(:want_course).permit(:course_number, :course_name, :course_section)
-    end
 
 end
