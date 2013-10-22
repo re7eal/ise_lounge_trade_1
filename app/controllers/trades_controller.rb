@@ -35,9 +35,7 @@ class TradesController < ApplicationController
           params[:have_courses].each do |course|
             @have_course = HaveCourse.new(course)
             @have_course.trade_id = @trade.id
-            if @have_course.save
-              puts ''
-            else
+            unless @have_course.save
               format.html { render action: 'new' }
               format.json { render json: @have_course.errors, status: :unprocessable_entity }
             end
@@ -47,9 +45,7 @@ class TradesController < ApplicationController
           params[:want_courses].each do |course|
             @want_course = WantCourse.new(course)
             @want_course.trade_id = @trade.id
-            if @want_course.save
-              puts ''
-            else
+            unless @want_course.save
               format.html { render action: 'new' }
               format.json { render json: @want_course.errors, status: :unprocessable_entity }
             end
