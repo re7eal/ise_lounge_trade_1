@@ -2,7 +2,10 @@ class TradeMessagesController < ApplicationController
   respond_to :json
 
   def index
-    respond_with TradeMessage.all
+    respond_to do |format|
+      format.html
+      format.json { render json: TradeMessage.joins(:user).select('trade_messages.*, users.name as username').where(:trade_id => params[:trade_id]) }
+    end
   end
  
   def show
@@ -10,7 +13,11 @@ class TradeMessagesController < ApplicationController
   end
  
   def create
-    respond_with TradeMessage.create(params[:trade_message])
+    @trade_message = TradeMessage.new(trade_message_params)
+    @trade_message.user_id = current_user.id
+    if @trade_message.save
+      respond_with TradeMessage.joins(:user).select('trade_messages.*, users.name as username').find(@trade_message)
+    end
   end
  
   def update
@@ -20,5 +27,11 @@ class TradeMessagesController < ApplicationController
   def destroy
     respond_with TradeMessage.destroy(params[:id])
   end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def trade_message_params
+      params.require(:trade_message).permit(:content, :trade_id)
+    end
 
 end

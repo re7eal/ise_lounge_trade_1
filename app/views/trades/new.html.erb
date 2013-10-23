@@ -1,5 +1,4 @@
 <div ng-controller="NewTradeController">
-<div class="container">
 	<div class="row-fluid">
 		<div class="span12">
 			<div class="control-group">
@@ -127,5 +126,19 @@
 				trades!</a>
 		</div>
 	</div>
-</div>
+
+	<div class="modal hide fade" id="newTradeError">
+		<div class="modal-header">
+			<button type="button" class="close fui-cross" data-dismiss="modal"
+			aria-hidden="true"></button>
+			<h3>Error</h3>
+		</div>
+		<div class="modal-body">
+			<p>{{errorMessage}}</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+
 </div>

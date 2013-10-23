@@ -1,4 +1,4 @@
-<div class="container">
+<div ng-controller="TradeController" ng-init="loadTradeMessages(<%= @trade.id %>)">
 	<p id="notice"><%= notice %></p>
 	<div class="row-fluid">
 		<div class="span6">
@@ -36,8 +36,8 @@
 							<h3 class="popover-title topic-box-title">Have</h3>
 							<div class="popover-content">
 								<% @trade.have_courses.each do |have_course| %>
-                   				<p><%= have_course.course_number %> <%= have_course.course_name %> (<%= have_course.course_section %>)</p>
-                   				<% end %>
+								<p><%= have_course.course_number %> <%= have_course.course_name %> (<%= have_course.course_section %>)</p>
+								<% end %>
 							</div>
 						</div>
 					</div>
@@ -46,8 +46,8 @@
 							<h3 class="popover-title topic-box-title">Want</h3>
 							<div class="popover-content">
 								<% @trade.want_courses.each do |want_courses| %>
-                   				<p><%= want_courses.course_number %> <%= want_courses.course_name %> (<%= want_courses.course_section %>)</p>
-                   				<% end %>
+								<p><%= want_courses.course_number %> <%= want_courses.course_name %> (<%= want_courses.course_section %>)</p>
+								<% end %>
 							</div>
 						</div>
 					</div>
@@ -55,14 +55,11 @@
 			</div>
 		</div>
 		<div class="span6">
-			<div class="well post-message-box">
-				<textarea class="span6" rows="2" placeholder="Write a message..."></textarea>
-				<button class="btn btn-small btn-primary pull-right"
-					style="padding: 4px">Post</button>
-			</div>
-			
-			<% @trade.trade_messages.each do |trade_message| %>
-			
+
+			<h3 class="mbl">Messages</h3>
+
+			<div ng-repeat="tradeMessage in tradeMessages">
+
 			<div class="well">
 				<div class="media">
 					<a class="pull-left" href="#"> <img class="media-object"
@@ -70,16 +67,22 @@
 					</a>
 					<div class="media-body">
 						<h4 class="media-heading">
-							<%= link_to trade_message.user.name, trade_message.user %>
+							<a href="/users/{{tradeMessage.user_id}}">{{tradeMessage.username}}</a>
 						</h4>
-						<p><%= trade_message.content %></p>
+						{{tradeMessage.created_at}}
+						<p>{{tradeMessage.content}}</p>
 					</div>
 				</div>
 			</div>
-			
-			<% end %>
-			
+
+			</div>
+
+			<div class="well post-message-box">
+				<textarea class="span6" rows="2" placeholder="Write a message..." ng-model="message"></textarea>
+				<button class="btn btn-small btn-primary pull-right"
+				style="padding: 4px" ng-click="postTrade(<%= @trade.id %>)">Post</button>
+			</div>
+
 		</div>
 	</div>
 </div>
-<!-- /.container -->
