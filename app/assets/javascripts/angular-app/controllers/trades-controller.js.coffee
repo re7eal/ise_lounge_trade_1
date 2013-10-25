@@ -17,8 +17,10 @@ App.controller 'NewTradeController', ['$scope', 'HaveCourse', 'WantCourse', 'Tra
   $scope.haveAddCourse = ->
     if ($scope.haveCourseNo is "") or ($scope.haveCourseName is "") or ($scope.haveCourseSection is "")
       $scope.errorMessage = "Please enter a value in all input fields"
-      $("#newTradeError").modal "show"
+      $scope.alert = true
       return
+
+    $scope.alert = false
 
     $scope.haveCourses.push
       course_number: $scope.haveCourseNo
@@ -35,8 +37,10 @@ App.controller 'NewTradeController', ['$scope', 'HaveCourse', 'WantCourse', 'Tra
   $scope.wantAddCourse = ->
     if ($scope.wantCourseNo is "") or ($scope.wantCourseName is "") or ($scope.wantCourseSection is "")
       $scope.errorMessage = "Please enter a value in all input fields"
-      $("#newTradeError").modal "show"
+      $scope.alert = true
       return
+
+    $scope.alert = false
 
     $scope.wantCourses.push
       course_number: $scope.wantCourseNo
@@ -51,9 +55,9 @@ App.controller 'NewTradeController', ['$scope', 'HaveCourse', 'WantCourse', 'Tra
     $scope.wantCourses.splice index, 1
 
   $scope.checkInput = ->
-    if ($scope.haveCourses.length <= 0) and ($scope.wantCourses.length <= 0) and ($scope.tradeNote is "")
+    if ($scope.haveCourses.length <= 0) and ($scope.wantCourses.length <= 0)
       $scope.errorMessage = "Empty trade post"
-      $("#newTradeError").modal "show"
+      $scope.alert = true
       return true
 
   $scope.postTrade = ->
@@ -77,23 +81,19 @@ App.controller 'TradeController', ['$scope', 'TradeMessage', ($scope, TradeMessa
   $scope.tradeMessages = []
   $scope.message = ""
 
-  $scope.loadTradeMessages = (tradeId) ->
-    $scope.tradeMessages = TradeMessage.query(
-      trade_id : tradeId
-    , ((response) ->
+  $scope.loadTradeMessages = ->
+    $scope.tradeMessages = TradeMessage.query(((response) ->
 
     ), (response) ->
       console.log "Error" + response.status
     )
 
-  $scope.postTrade = (tradeId) ->
+  $scope.postTrade = ->
     if $scope.message is ""
       return
     else
-      console.log tradeId
       TradeMessage.save
         content : $scope.message
-        trade_id : tradeId
       , ((response) ->
         $scope.tradeMessages.push response
         $scope.message = ""

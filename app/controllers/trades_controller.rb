@@ -11,6 +11,7 @@ class TradesController < ApplicationController
   # GET /trades/1
   # GET /trades/1.json
   def show
+    user_session[:current_trade_id] = @trade.id
   end
 
   # GET /trades/new

@@ -4,7 +4,7 @@
 			<div class="control-group">
 				<div class="input-append">
 					<input class="span2" id="appendedInputButton-03" type="text"
-						placeholder="Search Trades">
+					placeholder="Search Trades">
 					<div class="btn-group">
 						<button class="btn" type="button">
 							<span class="fui-search"></span>
@@ -15,6 +15,10 @@
 		</div>
 	</div>
 	<div class="row-fluid">
+		<div class="alert alert-error" ng-show="alert">
+			<p>{{errorMessage}}</p>
+		</div>
+
 		<div class="span12">
 
 			<div class="row-fluid mbm">
@@ -48,24 +52,24 @@
 				</div>
 
 				<div class="row-fluid">
-				<div class="span12">
-					<div class="well well-small" style="background-color: #BECCCF">
-						<div class="row-fluid">
-							<div class="span3">
-								<input class="span3" type="text" placeholder="Course No." ng-model="haveCourseNo" />
-							</div>
-							<div class="span5">
-								<input class="span5" type="text" placeholder="Course Name" ng-model="haveCourseName" />
-							</div>
-							<div class="span2">
-								<input class="span2" type="number" placeholder="Sec" ng-model="haveCourseSection" />
-							</div>
-							<div class="span2">
-								<a class="btn btn-block btn-primary" ng-click="haveAddCourse()">Add</a>
+					<div class="span12">
+						<div class="well well-small" style="background-color: #BECCCF">
+							<div class="row-fluid">
+								<div class="span3">
+									<input class="span3" type="text" placeholder="Course No." ng-model="haveCourseNo" />
+								</div>
+								<div class="span5">
+									<input class="span5" type="text" placeholder="Course Name" ng-model="haveCourseName" />
+								</div>
+								<div class="span2">
+									<input class="span2" type="number" placeholder="Sec" ng-model="haveCourseSection" />
+								</div>
+								<div class="span2">
+									<a class="btn btn-block btn-primary" ng-click="haveAddCourse()">Add</a>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 				</div>
 			</div>
 		</div>
@@ -124,21 +128,7 @@
 			<!--<div class="span6">-->
 			<a class="btn btn-large btn-primary pull-right" ng-click="postTrade()">Post
 				trades!</a>
+			</div>
 		</div>
-	</div>
 
-	<div class="modal hide fade" id="newTradeError">
-		<div class="modal-header">
-			<button type="button" class="close fui-cross" data-dismiss="modal"
-			aria-hidden="true"></button>
-			<h3>Error</h3>
-		</div>
-		<div class="modal-body">
-			<p>{{errorMessage}}</p>
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		</div>
 	</div>
-
-</div>

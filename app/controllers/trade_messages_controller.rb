@@ -5,7 +5,7 @@ class TradeMessagesController < ApplicationController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: TradeMessage.joins(:user).select('trade_messages.*, users.name as username').where(:trade_id => params[:trade_id]) }
+      format.json { render json: TradeMessage.joins(:user).select('trade_messages.*, users.name as username').where(:trade_id => user_session[:current_trade_id]) }
     end
   end
  
@@ -15,6 +15,7 @@ class TradeMessagesController < ApplicationController
  
   def create
     @trade_message = TradeMessage.new(trade_message_params)
+    @trade_message.trade_id = user_session[:current_trade_id]
     @trade_message.user_id = current_user.id
     if @trade_message.save
       respond_with TradeMessage.joins(:user).select('trade_messages.*, users.name as username').find(@trade_message)
@@ -32,7 +33,7 @@ class TradeMessagesController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def trade_message_params
-      params.require(:trade_message).permit(:content, :trade_id)
+      params.require(:trade_message).permit(:content)
     end
 
 end

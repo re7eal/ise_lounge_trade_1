@@ -1,4 +1,4 @@
-<div ng-controller="TradeController" ng-init="loadTradeMessages(<%= @trade.id %>)">
+<div ng-controller="TradeController" ng-init="loadTradeMessages()">
 	<p id="notice"><%= notice %></p>
 	<div class="row-fluid">
 		<div class="span6">
@@ -82,7 +82,7 @@
 			<div class="well post-message-box">
 				<textarea class="span6" rows="2" placeholder="Write a message..." ng-model="message"></textarea>
 				<button class="btn btn-small btn-primary pull-right"
-				style="padding: 4px" ng-click="postTrade(<%= @trade.id %>)">Post</button>
+				style="padding: 4px" ng-click="postTrade()">Post</button>
 			</div>
 
 		</div>
