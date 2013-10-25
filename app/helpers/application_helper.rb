@@ -24,4 +24,8 @@ module ApplicationHelper
     @devise_mapping ||= Devise.mappings[:user]
   end
 
+  def trade_pages
+    current_page?(trades_path) or current_page?(trade_path(params[:id])) or current_page?(new_trade_path) or current_page?(my_trades_path)
+  end
+
 end
