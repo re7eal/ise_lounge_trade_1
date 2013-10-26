@@ -28,4 +28,8 @@ module ApplicationHelper
     current_page?(trades_path) or current_page?(trade_path(params[:id])) or current_page?(new_trade_path) or current_page?(my_trades_path)
   end
 
+  def format_datetime date_time
+    date_time.localtime.strftime("%a, %d %b %Y %H:%M:%S")
+  end
+
 end

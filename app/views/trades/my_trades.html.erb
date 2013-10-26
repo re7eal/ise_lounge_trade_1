@@ -45,7 +45,7 @@
                   <h4 class="media-heading">
                     <%= link_to trade.user.name, trade.user %> wants to trade
                   </h4>
-                  <%= trade.created_at %>
+                  <%= format_datetime(trade.created_at) %>
                 </div>
               </div>
             </div>
