@@ -76,10 +76,25 @@ App.controller 'NewTradeController', ['$scope', 'HaveCourse', 'WantCourse', 'Tra
 
 ]
 
-App.controller 'TradeController', ['$scope', 'TradeMessage', ($scope, TradeMessage) ->
+App.controller 'TradeController', ['$scope', 'Trade', 'TradeMessage', ($scope, Trade, TradeMessage) ->
 
   $scope.tradeMessages = []
   $scope.message = ""
+  $scope.finished = ""
+
+  $scope.initShowTrade = (id) ->
+    $scope.loadTradeMessages()
+    $scope.loadTrade(id)
+
+  $scope.loadTrade = (id) ->
+    $scope.trade = Trade.get
+      id : id
+    , ((response) ->
+      $scope.trade = response
+      $scope.finished = "finished"  if response.finished
+    ), (response) ->
+      console.log "Error" + response.status
+    
 
   $scope.loadTradeMessages = ->
     $scope.tradeMessages = TradeMessage.query(((response) ->
@@ -88,16 +103,45 @@ App.controller 'TradeController', ['$scope', 'TradeMessage', ($scope, TradeMessa
       console.log "Error" + response.status
     )
 
-  $scope.postTrade = ->
+  $scope.updateTradeNote = (id) ->
+    Trade.update
+      id : id
+      note : $scope.trade.note
+    , ((response) ->
+      $scope.alert = false
+      $scope.trade.note = response.note
+      ), (response) ->
+        $scope.errorMessage = "Error updating trade note"
+        $scope.alert = true
+        $scope.trade.note = $scope.tmpTradeNote
+        console.log "Error" + response.status
+
+  $scope.updateFinished = (id) ->
+    Trade.update
+      id : id
+      finished : true
+    , ((response) ->
+      $scope.alert = false
+      $scope.trade.finished = response.finished
+      $scope.finished = "finished"
+      ), (response) ->
+        $scope.errorMessage = "Error updating trade"
+        $scope.alert = true
+        console.log "Error" + response.status
+
+  $scope.postTradeMessage = ->
     if $scope.message is ""
       return
     else
       TradeMessage.save
         content : $scope.message
       , ((response) ->
+        $scope.alert = false
         $scope.tradeMessages.push response
         $scope.message = ""
         ), (response) ->
+          $scope.errorMessage = "Error posting message"
+          $scope.alert = true
           console.log "Error" + response.status
 
 ]

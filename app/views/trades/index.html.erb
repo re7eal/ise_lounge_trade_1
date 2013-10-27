@@ -28,6 +28,12 @@
 
   <div class="span9">
 
+    <div class="row-fluid mbl">
+      <div class="span12">
+        <h3>Recent Trades</h3>
+      </div>
+    </div>
+
     <% @trades.order('created_at desc').each do |trade| %>
 
     <div class="row-fluid">

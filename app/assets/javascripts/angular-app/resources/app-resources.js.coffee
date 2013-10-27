@@ -1,5 +1,7 @@
-App.factory 'Trade', ['$resource', ($resource) ->
-  $resource '/trades'
+App.factory "Trade", ["$resource", ($resource) ->
+  $resource "/trades/:id", {id:'@id'},
+    update:
+      method: "PUT"
 ]
 
 App.factory 'TradeMessage', ['$resource', ($resource) ->
