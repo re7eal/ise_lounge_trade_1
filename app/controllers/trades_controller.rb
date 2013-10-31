@@ -102,6 +102,12 @@ class TradesController < ApplicationController
     @trades = Trade.where(:user_id => current_user.id)
   end
 
+  def search
+    @trades_notes = Trade.search_by_note(params[:search])
+    @trades_have_courses = Trade.search_by_have_courses(params[:search])
+    @trades_want_courses = Trade.search_by_want_courses(params[:search])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_trade

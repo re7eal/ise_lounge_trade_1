@@ -22,15 +22,6 @@ ActiveRecord::Schema.define(version: 20131019063459) do
     t.datetime "updated_at"
   end
 
-  create_table "haves", force: true do |t|
-    t.string   "course_number"
-    t.string   "course_name"
-    t.integer  "course_section"
-    t.integer  "trade_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "roles", force: true do |t|
     t.string   "name"
     t.integer  "resource_id"
@@ -85,15 +76,6 @@ ActiveRecord::Schema.define(version: 20131019063459) do
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
 
   create_table "want_courses", force: true do |t|
-    t.string   "course_number"
-    t.string   "course_name"
-    t.integer  "course_section"
-    t.integer  "trade_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "wants", force: true do |t|
     t.string   "course_number"
     t.string   "course_name"
     t.integer  "course_section"

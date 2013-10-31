@@ -6,6 +6,8 @@ BootstrapDeviseCancan::Application.routes.draw do
 
   get 'my_trades', to: 'trades#my_trades'
 
+  get 'search_trades', to: 'trades#search'
+
   resources :trade_messages
 
   resources :trades
