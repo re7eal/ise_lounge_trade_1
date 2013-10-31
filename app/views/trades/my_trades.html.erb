@@ -1,16 +1,18 @@
 <div class="row-fluid">
   <div class="span12">
+    <%= form_tag search_trades_path, :method => :get do %>
     <div class="control-group">
       <div class="input-append">
-        <input class="span2" id="appendedInputButton-03" type="text"
-        placeholder="Search Trades">
+        <%= text_field_tag :search, params[:search], :class => 'span2', :id => 'appendedInputButton-03', :placeholder => 'Search Trades' %>
         <div class="btn-group">
-          <button class="btn" type="button">
-            <span class="fui-search"></span>
-          </button>
+          <%= button_tag '', :name => nil, :class => 'btn' do %>
+          <%= content_tag :span, :class => 'fui-search' do %>
+          <% end %>
+          <% end %>
         </div>
       </div>
     </div>
+    <% end %>
   </div>
 </div>
 
