@@ -36659,7 +36659,24 @@ angular.module('ngResource', ['ng']).
 
 }).call(this);
 (function() {
-  App.controller('ApplicationController', ['$scope', function($scope) {}]);
+  App.controller('ApplicationController', [
+    '$scope', function($scope) {
+      return $scope.formatDate = function(date) {
+        var curr_date, curr_day, curr_hour, curr_min, curr_month, curr_sec, curr_year, d, d_names, m_names;
+        d_names = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+        m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+        d = new Date(date);
+        curr_day = d.getDay();
+        curr_date = d.getDate();
+        curr_month = d.getMonth();
+        curr_year = d.getFullYear();
+        curr_hour = ("0" + d.getHours()).slice(-2);
+        curr_min = ("0" + d.getMinutes()).slice(-2);
+        curr_sec = ("0" + d.getSeconds()).slice(-2);
+        return d_names[curr_day] + ", " + curr_date + " " + m_names[curr_month] + " " + curr_year + " " + curr_hour + ":" + curr_min + ":" + curr_sec;
+      };
+    }
+  ]);
 
 }).call(this);
 (function() {
@@ -36678,9 +36695,10 @@ angular.module('ngResource', ['ng']).
       $scope.haveAddCourse = function() {
         if (($scope.haveCourseNo === "") || ($scope.haveCourseName === "") || ($scope.haveCourseSection === "")) {
           $scope.errorMessage = "Please enter a value in all input fields";
-          $("#newTradeError").modal("show");
+          $scope.alert = true;
           return;
         }
+        $scope.alert = false;
         $scope.haveCourses.push({
           course_number: $scope.haveCourseNo,
           course_name: $scope.haveCourseName,
@@ -36696,9 +36714,10 @@ angular.module('ngResource', ['ng']).
       $scope.wantAddCourse = function() {
         if (($scope.wantCourseNo === "") || ($scope.wantCourseName === "") || ($scope.wantCourseSection === "")) {
           $scope.errorMessage = "Please enter a value in all input fields";
-          $("#newTradeError").modal("show");
+          $scope.alert = true;
           return;
         }
+        $scope.alert = false;
         $scope.wantCourses.push({
           course_number: $scope.wantCourseNo,
           course_name: $scope.wantCourseName,
@@ -36712,9 +36731,9 @@ angular.module('ngResource', ['ng']).
         return $scope.wantCourses.splice(index, 1);
       };
       $scope.checkInput = function() {
-        if (($scope.haveCourses.length <= 0) && ($scope.wantCourses.length <= 0) && ($scope.tradeNote === "")) {
+        if (($scope.haveCourses.length <= 0) && ($scope.wantCourses.length <= 0)) {
           $scope.errorMessage = "Empty trade post";
-          $("#newTradeError").modal("show");
+          $scope.alert = true;
           return true;
         }
       };
@@ -36738,28 +36757,72 @@ angular.module('ngResource', ['ng']).
   ]);
 
   App.controller('TradeController', [
-    '$scope', 'TradeMessage', function($scope, TradeMessage) {
+    '$scope', 'Trade', 'TradeMessage', function($scope, Trade, TradeMessage) {
       $scope.tradeMessages = [];
       $scope.message = "";
-      $scope.loadTradeMessages = function(tradeId) {
-        return $scope.tradeMessages = TradeMessage.query({
-          trade_id: tradeId
-        }, (function(response) {}), function(response) {
+      $scope.finished = "";
+      $scope.initShowTrade = function(id) {
+        $scope.loadTradeMessages();
+        return $scope.loadTrade(id);
+      };
+      $scope.loadTrade = function(id) {
+        return $scope.trade = Trade.get({
+          id: id
+        }, (function(response) {
+          $scope.trade = response;
+          if (response.finished) {
+            return $scope.finished = "finished";
+          }
+        }), function(response) {
           return console.log("Error" + response.status);
         });
       };
-      return $scope.postTrade = function(tradeId) {
+      $scope.loadTradeMessages = function() {
+        return $scope.tradeMessages = TradeMessage.query((function(response) {}), function(response) {
+          return console.log("Error" + response.status);
+        });
+      };
+      $scope.updateTradeNote = function(id) {
+        return Trade.update({
+          id: id,
+          note: $scope.trade.note
+        }, (function(response) {
+          $scope.alert = false;
+          return $scope.trade.note = response.note;
+        }), function(response) {
+          $scope.errorMessage = "Error updating trade note";
+          $scope.alert = true;
+          $scope.trade.note = $scope.tmpTradeNote;
+          return console.log("Error" + response.status);
+        });
+      };
+      $scope.updateFinished = function(id) {
+        return Trade.update({
+          id: id,
+          finished: true
+        }, (function(response) {
+          $scope.alert = false;
+          $scope.trade.finished = response.finished;
+          return $scope.finished = "finished";
+        }), function(response) {
+          $scope.errorMessage = "Error updating trade";
+          $scope.alert = true;
+          return console.log("Error" + response.status);
+        });
+      };
+      return $scope.postTradeMessage = function() {
         if ($scope.message === "") {
 
         } else {
-          console.log(tradeId);
           return TradeMessage.save({
-            content: $scope.message,
-            trade_id: tradeId
+            content: $scope.message
           }, (function(response) {
+            $scope.alert = false;
             $scope.tradeMessages.push(response);
             return $scope.message = "";
           }), function(response) {
+            $scope.errorMessage = "Error posting message";
+            $scope.alert = true;
             return console.log("Error" + response.status);
           });
         }
@@ -36777,9 +36840,15 @@ angular.module('ngResource', ['ng']).
 
 }).call(this);
 (function() {
-  App.factory('Trade', [
-    '$resource', function($resource) {
-      return $resource('/trades');
+  App.factory("Trade", [
+    "$resource", function($resource) {
+      return $resource("/trades/:id", {
+        id: '@id'
+      }, {
+        update: {
+          method: "PUT"
+        }
+      });
     }
   ]);
 
