@@ -84,6 +84,9 @@
 
 			</div>
 
+			<div id="loading-message-box" ng-show="working">
+				<%= render 'layouts/loading' %>
+			</div>
 			<div class="well post-message-box" ng-show="!trade.finished">
 				<textarea class="span6" rows="2" placeholder="Write a message..." ng-model="message"></textarea>
 				<button class="btn btn-small btn-primary pull-right"

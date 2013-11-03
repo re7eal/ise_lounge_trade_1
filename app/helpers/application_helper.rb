@@ -29,7 +29,7 @@ module ApplicationHelper
   end
 
   def format_datetime date_time
-    date_time.localtime.strftime("%a, %d %b %Y %H:%M:%S")
+    date_time.localtime.strftime("%a, %-d %b %Y %H:%M:%S")
   end
 
 end

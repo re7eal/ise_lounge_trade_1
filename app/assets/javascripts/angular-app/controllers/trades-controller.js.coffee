@@ -64,14 +64,17 @@ App.controller 'NewTradeController', ['$scope', 'HaveCourse', 'WantCourse', 'Tra
     if $scope.checkInput()
       return
     else
+      $scope.working = true
       Trade.save
         note : $scope.tradeNote
         have_courses : $scope.haveCourses
         want_courses : $scope.wantCourses
       , ((response) ->
         console.log "Success"
+        $scope.working = false
         window.location.href = "/trades/" + response.id
         ), (response) ->
+          $scope.working = false
           console.log "Error" + response.status
 
 ]
@@ -133,15 +136,18 @@ App.controller 'TradeController', ['$scope', 'Trade', 'TradeMessage', ($scope, T
     if $scope.message is ""
       return
     else
+      $scope.working = true
       TradeMessage.save
         content : $scope.message
       , ((response) ->
         $scope.alert = false
         $scope.tradeMessages.push response
         $scope.message = ""
+        $scope.working = false
         ), (response) ->
           $scope.errorMessage = "Error posting message"
           $scope.alert = true
+          $scope.working = false
           console.log "Error" + response.status
 
 ]

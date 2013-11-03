@@ -1,4 +1,9 @@
 <div ng-controller="NewTradeController">
+
+	<div id="loading-page" ng-show="working">
+		<%= render 'layouts/loading' %>
+	</div>
+
 	<div class="row-fluid">
 		<div class="span12">
 			<%= form_tag search_trades_path, :method => :get do %>
@@ -123,11 +128,10 @@
 				<p>Trade note</p>
 				<textarea rows="3" class="span12" placeholder="Description..." ng-model="tradeNote"></textarea>
 			</div>
-			<!--</div>-->
-			<!--<div class="span6">-->
+
 			<a class="btn btn-large btn-primary pull-right" ng-click="postTrade()">Post
 				trades!</a>
-			</div>
 		</div>
-
 	</div>
+
+</div>
