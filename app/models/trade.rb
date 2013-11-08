@@ -6,7 +6,7 @@ class Trade < ActiveRecord::Base
 
   def self.search_by_note(search)
     if search
-      where('note LIKE lower(?)', "%#{search}%")
+      where('note LIKE lower(?)', "%#{search.downcase}%")
     else
       all
     end
@@ -14,7 +14,7 @@ class Trade < ActiveRecord::Base
 
   def self.search_by_have_courses(search)
     if search
-      joins(:have_courses).where('course_number LIKE lower(?) OR course_name LIKE lower(?)', "%#{search}%", "%#{search}%")
+      joins(:have_courses).where('course_number LIKE lower(?) OR course_name LIKE lower(?)', "%#{search.downcase}%", "%#{search.downcase}%")
     else
       all
     end
@@ -22,7 +22,7 @@ class Trade < ActiveRecord::Base
 
   def self.search_by_want_courses(search)
     if search
-      joins(:want_courses).where('course_number LIKE lower(?) OR course_name LIKE lower(?)', "%#{search}%", "%#{search}%")
+      joins(:want_courses).where('course_number LIKE lower(?) OR course_name LIKE lower(?)', "%#{search.downcase}%", "%#{search.downcase}%")
     else
       all
     end
