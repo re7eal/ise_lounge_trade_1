@@ -151,3 +151,19 @@ App.controller 'TradeController', ['$scope', 'Trade', 'TradeMessage', ($scope, T
           console.log "Error" + response.status
 
 ]
+
+App.controller 'MyTradeController', ['$scope', 'Trade', ($scope, Trade) ->
+
+  $scope.updateFinished = (id) ->
+    Trade.update
+      id : id
+      finished : true
+    , ((response) ->
+      $scope.alert = false
+      $scope.finished = "finished"
+      ), (response) ->
+        $scope.errorMessage = "Error updating trade"
+        $scope.alert = true
+        console.log "Error" + response.status
+
+]

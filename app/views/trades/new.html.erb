@@ -36,9 +36,10 @@
 		<div class="span6">
 			<div class="well">
 				<p>I Have</p>
-				<div class="row-fluid" ng-show="haveCourses.length > 0">
+				<div class="row-fluid">
 					<div class="span12">
-						<table class="table table-striped table-hover">
+						<div class="text-center" ng-show="haveCourses.length <= 0">There is no course in Have list. Click 'Add' to add to the list.</div>
+						<table class="table table-striped table-hover" ng-show="haveCourses.length > 0">
 							<tr>
 								<th>Course Number</th>
 								<th>Course Name</th>
@@ -80,9 +81,10 @@
 		<div class="span6">
 			<div class="well">
 				<p>I Want</p>
-				<div class="row-fluid" ng-show="wantCourses.length > 0">
+				<div class="row-fluid">
 					<div class="span12">
-						<table class="table table-striped table-hover">
+						<div class="text-center" ng-show="wantCourses.length <= 0">There is no course in Want list. Click 'Add' to add to the list.</div>
+						<table class="table table-striped table-hover" ng-show="wantCourses.length > 0">
 							<tr>
 								<th>Course Number</th>
 								<th>Course Name</th>
