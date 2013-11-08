@@ -36741,14 +36741,17 @@ angular.module('ngResource', ['ng']).
         if ($scope.checkInput()) {
 
         } else {
+          $scope.working = true;
           return Trade.save({
             note: $scope.tradeNote,
             have_courses: $scope.haveCourses,
             want_courses: $scope.wantCourses
           }, (function(response) {
             console.log("Success");
+            $scope.working = false;
             return window.location.href = "/trades/" + response.id;
           }), function(response) {
+            $scope.working = false;
             return console.log("Error" + response.status);
           });
         }
@@ -36814,18 +36817,39 @@ angular.module('ngResource', ['ng']).
         if ($scope.message === "") {
 
         } else {
+          $scope.working = true;
           return TradeMessage.save({
             content: $scope.message
           }, (function(response) {
             $scope.alert = false;
             $scope.tradeMessages.push(response);
-            return $scope.message = "";
+            $scope.message = "";
+            return $scope.working = false;
           }), function(response) {
             $scope.errorMessage = "Error posting message";
             $scope.alert = true;
+            $scope.working = false;
             return console.log("Error" + response.status);
           });
         }
+      };
+    }
+  ]);
+
+  App.controller('MyTradeController', [
+    '$scope', 'Trade', function($scope, Trade) {
+      return $scope.updateFinished = function(id) {
+        return Trade.update({
+          id: id,
+          finished: true
+        }, (function(response) {
+          $scope.alert = false;
+          return $scope.finished = "finished";
+        }), function(response) {
+          $scope.errorMessage = "Error updating trade";
+          $scope.alert = true;
+          return console.log("Error" + response.status);
+        });
       };
     }
   ]);
