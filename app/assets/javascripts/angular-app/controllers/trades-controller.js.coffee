@@ -1,3 +1,28 @@
+App.controller 'MainTradeController', ['$scope', 'Trade', ($scope, Trade) ->
+
+  $scope.initTrades = ->
+    $scope.page = 1
+    $scope.more = true
+    $scope.trades = Trade.query
+      page : $scope.page
+    , ((response) ->
+
+    ), (response) ->
+      console.log "Error" + response.status
+
+  $scope.loadMoreTrades = ->
+    Trade.query
+      page : ++$scope.page
+    , ((response) ->
+      if response.length is 0
+        $scope.more = false
+      else
+        $scope.trades.push.apply $scope.trades, response
+    ), (response) ->
+      console.log "Error" + response.status
+
+]
+
 App.controller 'NewTradeController', ['$scope', 'HaveCourse', 'WantCourse', 'Trade', ($scope, HaveCourse, WantCourse, Trade) ->
  
   $scope.haveCourses = []

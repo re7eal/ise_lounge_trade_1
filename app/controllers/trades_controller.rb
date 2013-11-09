@@ -5,7 +5,7 @@ class TradesController < ApplicationController
   # GET /trades
   # GET /trades.json
   def index
-    @trades = Trade.all
+    @trades = Trade.order(:id).reverse_order.limit(10).offset((params[:page].to_i-1)*10)
   end
 
   # GET /trades/1
